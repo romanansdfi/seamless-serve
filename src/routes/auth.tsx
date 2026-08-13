@@ -46,7 +46,10 @@ function AuthPage() {
     if (mode === "signin") {
       const { error } = await supabase.auth.signInWithPassword(parsed.data);
       setBusy(false);
-      if (error) return toast.error(error.message);
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
       navigate({ to: "/staff/dashboard" });
     } else {
       const { error } = await supabase.auth.signUp({
@@ -54,7 +57,10 @@ function AuthPage() {
         options: { emailRedirectTo: `${window.location.origin}/staff/dashboard` },
       });
       setBusy(false);
-      if (error) return toast.error(error.message);
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
       toast.success("Staff account created — you can sign in now");
       setMode("signin");
     }
