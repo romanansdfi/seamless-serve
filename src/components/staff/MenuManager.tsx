@@ -128,10 +128,11 @@ export function MenuManager() {
   };
 
   const toggleField = async (food: Food, field: "is_available" | "is_special") => {
-    const { error } = await supabase
-      .from("foods")
-      .update({ [field]: !food[field] })
-      .eq("id", food.id);
+    const patch =
+      field === "is_available"
+        ? { is_available: !food.is_available }
+        : { is_special: !food.is_special };
+    const { error } = await supabase.from("foods").update(patch).eq("id", food.id);
     if (error) toast.error("Could not update");
     else refresh();
   };
