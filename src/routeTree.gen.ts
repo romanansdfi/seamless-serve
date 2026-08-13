@@ -10,15 +10,21 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as MenuRouteImport } from './routes/menu'
 import { Route as OrderIdRouteImport } from './routes/order.$id'
 import { Route as TableTableRouteImport } from './routes/table.$table'
+import { Route as AuthenticatedStaffDashboardRouteImport } from './routes/_authenticated/staff.dashboard'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -46,6 +52,12 @@ const TableTableRoute = TableTableRouteImport.update({
   path: '/table/$table',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedStaffDashboardRoute =
+  AuthenticatedStaffDashboardRouteImport.update({
+    id: '/staff/dashboard',
+    path: '/staff/dashboard',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/menu': typeof MenuRoute
   '/order/$id': typeof OrderIdRoute
   '/table/$table': typeof TableTableRoute
+  '/staff/dashboard': typeof AuthenticatedStaffDashboardRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,33 +75,53 @@ export interface FileRoutesByTo {
   '/menu': typeof MenuRoute
   '/order/$id': typeof OrderIdRoute
   '/table/$table': typeof TableTableRoute
+  '/staff/dashboard': typeof AuthenticatedStaffDashboardRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/cart': typeof CartRoute
   '/menu': typeof MenuRoute
   '/order/$id': typeof OrderIdRoute
   '/table/$table': typeof TableTableRoute
+  '/_authenticated/staff/dashboard': typeof AuthenticatedStaffDashboardRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/cart' | '/menu' | '/order/$id' | '/table/$table'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/cart' | '/menu' | '/order/$id' | '/table/$table'
-  id:
-    | '__root__'
+  fullPaths:
     | '/'
     | '/auth'
     | '/cart'
     | '/menu'
     | '/order/$id'
     | '/table/$table'
+    | '/staff/dashboard'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/auth'
+    | '/cart'
+    | '/menu'
+    | '/order/$id'
+    | '/table/$table'
+    | '/staff/dashboard'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/cart'
+    | '/menu'
+    | '/order/$id'
+    | '/table/$table'
+    | '/_authenticated/staff/dashboard'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   CartRoute: typeof CartRoute
   MenuRoute: typeof MenuRoute
@@ -103,6 +136,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -140,11 +180,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TableTableRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/staff/dashboard': {
+      id: '/_authenticated/staff/dashboard'
+      path: '/staff/dashboard'
+      fullPath: '/staff/dashboard'
+      preLoaderRoute: typeof AuthenticatedStaffDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedStaffDashboardRoute: typeof AuthenticatedStaffDashboardRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedStaffDashboardRoute: AuthenticatedStaffDashboardRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   CartRoute: CartRoute,
   MenuRoute: MenuRoute,
