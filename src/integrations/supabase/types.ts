@@ -175,6 +175,39 @@ export type Database = {
         }
         Relationships: []
       }
+      service_requests: {
+        Row: {
+          created_at: string
+          customer_name: string
+          id: string
+          note: string
+          status: Database["public"]["Enums"]["service_request_status"]
+          table_number: string
+          type: Database["public"]["Enums"]["service_request_type"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          customer_name?: string
+          id?: string
+          note?: string
+          status?: Database["public"]["Enums"]["service_request_status"]
+          table_number: string
+          type?: Database["public"]["Enums"]["service_request_type"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          customer_name?: string
+          id?: string
+          note?: string
+          status?: Database["public"]["Enums"]["service_request_status"]
+          table_number?: string
+          type?: Database["public"]["Enums"]["service_request_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -216,6 +249,8 @@ export type Database = {
         | "ready"
         | "served"
         | "cancelled"
+      service_request_status: "open" | "resolved"
+      service_request_type: "waiter" | "water" | "bill" | "cleaning"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -352,6 +387,8 @@ export const Constants = {
         "served",
         "cancelled",
       ],
+      service_request_status: ["open", "resolved"],
+      service_request_type: ["waiter", "water", "bill", "cleaning"],
     },
   },
 } as const
