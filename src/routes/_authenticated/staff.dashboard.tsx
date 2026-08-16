@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { BarChart3, ClipboardList, LogOut, Moon, QrCode, Sun, UtensilsCrossed } from "lucide-react";
+import { BarChart3, BellRing, ClipboardList, LogOut, Moon, QrCode, Sun, UtensilsCrossed } from "lucide-react";
 import { Analytics } from "@/components/staff/Analytics";
 import { MenuManager } from "@/components/staff/MenuManager";
 import { OrdersBoard } from "@/components/staff/OrdersBoard";
 import { QrStudio } from "@/components/staff/QrStudio";
+import { RequestsBoard } from "@/components/staff/RequestsBoard";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 
@@ -22,6 +23,7 @@ export const Route = createFileRoute("/_authenticated/staff/dashboard")({
 
 const TABS = [
   { id: "orders", label: "Live orders", icon: ClipboardList },
+  { id: "requests", label: "Requests", icon: BellRing },
   { id: "menu", label: "Menu", icon: UtensilsCrossed },
   { id: "analytics", label: "Analytics", icon: BarChart3 },
   { id: "qr", label: "QR codes", icon: QrCode },
@@ -94,6 +96,7 @@ function Dashboard() {
 
       <div className="mx-auto mt-6 max-w-6xl">
         {tab === "orders" && <OrdersBoard />}
+        {tab === "requests" && <RequestsBoard />}
         {tab === "menu" && <MenuManager />}
         {tab === "analytics" && <Analytics />}
         {tab === "qr" && <QrStudio />}
