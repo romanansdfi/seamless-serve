@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "motion/react";
 import { Search, ShoppingBag, Sparkles } from "lucide-react";
 import { toast } from "sonner";
+import { CallWaiter } from "@/components/CallWaiter";
 import { BottomNav } from "@/components/BottomNav";
 import { FoodCard } from "@/components/FoodCard";
 import { FoodDialog } from "@/components/FoodDialog";
@@ -207,6 +208,7 @@ function MenuPage() {
       </AnimatePresence>
 
       <FoodDialog food={selected} onClose={() => setSelected(null)} />
+      <CallWaiter />
       <BottomNav />
       <p className="px-5 pt-8 text-center text-xs text-muted-foreground">
         Restaurant staff? <Link to="/auth" className="font-semibold text-primary">Sign in</Link>
