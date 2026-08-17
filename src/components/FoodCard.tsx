@@ -32,15 +32,17 @@ export function FoodCard({
   onToggleFavorite: () => void;
 }) {
   return (
-    <motion.article
-      layout
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      whileTap={{ scale: 0.985 }}
-      transition={{ type: "spring", stiffness: 260, damping: 26 }}
-      className="group overflow-hidden rounded-3xl border bg-card shadow-soft"
-    >
-      <button onClick={onOpen} className="block w-full text-left">
+    <Tilt3D className="h-full">
+      <motion.article
+        layout
+        initial={{ opacity: 0, y: 16, rotateX: -8 }}
+        animate={{ opacity: 1, y: 0, rotateX: 0 }}
+        whileTap={{ scale: 0.985 }}
+        transition={{ type: "spring", stiffness: 260, damping: 26 }}
+        className="group depth-card depth-card-hover h-full overflow-hidden rounded-3xl border bg-card"
+      >
+        <button onClick={onOpen} className="block w-full text-left">
+
         <div className="relative aspect-4/3 overflow-hidden">
           <img
             src={food.image_url ?? "/images/hero.jpg"}
