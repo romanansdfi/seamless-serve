@@ -129,28 +129,30 @@ function MenuPage() {
           <h2 className="mb-3 flex items-center gap-2 font-display text-xl">
             <Sparkles className="h-4 w-4 text-primary" /> Popular right now
           </h2>
-          <div className="no-scrollbar -mx-5 flex gap-3 overflow-x-auto px-5 pb-1">
+          <div className="no-scrollbar perspective-scene -mx-5 flex gap-3 overflow-x-auto px-5 pb-3">
             {popular.map((f) => (
-              <button
-                key={f.id}
-                onClick={() => setSelected(f)}
-                className="w-40 shrink-0 overflow-hidden rounded-3xl border bg-card text-left shadow-soft"
-              >
-                <img
-                  src={f.image_url ?? "/images/hero.jpg"}
-                  alt={f.name}
-                  loading="lazy"
-                  width={400}
-                  height={300}
-                  className="h-24 w-full object-cover"
-                />
-                <div className="p-3">
-                  <p className="truncate text-sm font-bold">{f.name}</p>
-                  <p className="text-xs text-muted-foreground">{money(Number(f.price))}</p>
-                </div>
-              </button>
+              <Tilt3D key={f.id} className="w-40 shrink-0" intensity={12} lift={18}>
+                <button
+                  onClick={() => setSelected(f)}
+                  className="depth-card depth-card-hover w-full overflow-hidden rounded-3xl border bg-card text-left"
+                >
+                  <img
+                    src={f.image_url ?? "/images/hero.jpg"}
+                    alt={f.name}
+                    loading="lazy"
+                    width={400}
+                    height={300}
+                    className="h-24 w-full object-cover"
+                  />
+                  <div className="preserve-3d p-3">
+                    <p className="layer-mid truncate text-sm font-bold">{f.name}</p>
+                    <p className="text-xs text-muted-foreground">{money(Number(f.price))}</p>
+                  </div>
+                </button>
+              </Tilt3D>
             ))}
           </div>
+
         </section>
       )}
 
