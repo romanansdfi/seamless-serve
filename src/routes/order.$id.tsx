@@ -25,26 +25,17 @@ export const Route = createFileRoute("/order/$id")({
 
 function OrderPage() {
   const { id } = Route.useParams();
-  const queryClient = useQueryClient();
   const { data: order, isLoading } = useQuery(orderQuery(id));
+  const lastStatus = useRef<string | null>(null);
 
   useEffect(() => {
-    const channel = supabase
-      .channel(`order-${id}`)
-      .on(
-        "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "orders", filter: `id=eq.${id}` },
-        (payload) => {
-          const next = payload.new as { status: keyof typeof STATUS_LABEL };
-          queryClient.invalidateQueries({ queryKey: ["order", id] });
-          toast.success(STATUS_LABEL[next.status]);
-        },
-      )
-      .subscribe();
-    return () => {
-      void supabase.removeChannel(channel);
-    };
-  }, [id, queryClient]);
+    if (!order?.status) return;
+    if (lastStatus.current && lastStatus.current !== order.status) {
+      toast.success(STATUS_LABEL[order.status as keyof typeof STATUS_LABEL]);
+    }
+    lastStatus.current = order.status;
+  }, [order?.status]);
+
 
   if (isLoading) {
     return (
