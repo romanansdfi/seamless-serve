@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { Clock, Flame, Heart, Plus, Star } from "lucide-react";
+import { Tilt3D } from "@/components/Tilt3D";
 import type { Food } from "@/lib/menu";
 import { money } from "@/lib/store";
 import { cn } from "@/lib/utils";
@@ -32,15 +33,17 @@ export function FoodCard({
   onToggleFavorite: () => void;
 }) {
   return (
-    <motion.article
-      layout
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      whileTap={{ scale: 0.985 }}
-      transition={{ type: "spring", stiffness: 260, damping: 26 }}
-      className="group overflow-hidden rounded-3xl border bg-card shadow-soft"
-    >
-      <button onClick={onOpen} className="block w-full text-left">
+    <Tilt3D className="h-full">
+      <motion.article
+        layout
+        initial={{ opacity: 0, y: 16, rotateX: -8 }}
+        animate={{ opacity: 1, y: 0, rotateX: 0 }}
+        whileTap={{ scale: 0.985 }}
+        transition={{ type: "spring", stiffness: 260, damping: 26 }}
+        className="group depth-card depth-card-hover h-full overflow-hidden rounded-3xl border bg-card"
+      >
+        <button onClick={onOpen} className="block w-full text-left">
+
         <div className="relative aspect-4/3 overflow-hidden">
           <img
             src={food.image_url ?? "/images/hero.jpg"}
@@ -80,42 +83,44 @@ export function FoodCard({
             </span>
           </div>
         </div>
-      </button>
+        </button>
 
-      <div className="space-y-2 p-4">
-        <div className="flex min-w-0 items-center gap-2">
-          <VegBadge isVeg={food.is_veg} />
-          <h3 className="truncate text-base font-bold">{food.name}</h3>
-        </div>
-        <p className="line-clamp-2 text-xs text-muted-foreground">{food.description}</p>
-        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
-          <span className="inline-flex items-center gap-1">
-            <Star className="h-3 w-3 fill-primary text-primary" />
-            {Number(food.rating).toFixed(1)}
-          </span>
-          <span className="inline-flex items-center gap-1">
-            <Clock className="h-3 w-3" />
-            {food.prep_time} min
-          </span>
-          {food.spice_level > 0 && (
-            <span className="inline-flex items-center gap-0.5">
-              {Array.from({ length: food.spice_level }).map((_, i) => (
-                <Flame key={i} className="h-3 w-3 text-nonveg" />
-              ))}
+        <div className="preserve-3d space-y-2 p-4">
+          <div className="layer-mid flex min-w-0 items-center gap-2">
+            <VegBadge isVeg={food.is_veg} />
+            <h3 className="truncate text-base font-bold">{food.name}</h3>
+          </div>
+          <p className="line-clamp-2 text-xs text-muted-foreground">{food.description}</p>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted-foreground">
+            <span className="inline-flex items-center gap-1">
+              <Star className="h-3 w-3 fill-primary text-primary" />
+              {Number(food.rating).toFixed(1)}
             </span>
-          )}
+            <span className="inline-flex items-center gap-1">
+              <Clock className="h-3 w-3" />
+              {food.prep_time} min
+            </span>
+            {food.spice_level > 0 && (
+              <span className="inline-flex items-center gap-0.5">
+                {Array.from({ length: food.spice_level }).map((_, i) => (
+                  <Flame key={i} className="h-3 w-3 text-nonveg" />
+                ))}
+              </span>
+            )}
+          </div>
+          <div className="layer-pop flex items-center justify-between gap-3 pt-1">
+            <span className="font-display text-xl">{money(Number(food.price))}</span>
+            <button
+              disabled={!food.is_available}
+              onClick={onAdd}
+              className="gradient-ember inline-flex shrink-0 items-center gap-1 rounded-full px-4 py-2 text-xs font-bold text-primary-foreground shadow-glow transition-transform active:scale-95 disabled:opacity-40 disabled:shadow-none"
+            >
+              <Plus className="h-4 w-4" /> Add
+            </button>
+          </div>
         </div>
-        <div className="flex items-center justify-between gap-3 pt-1">
-          <span className="font-display text-xl">{money(Number(food.price))}</span>
-          <button
-            disabled={!food.is_available}
-            onClick={onAdd}
-            className="gradient-ember inline-flex shrink-0 items-center gap-1 rounded-full px-4 py-2 text-xs font-bold text-primary-foreground shadow-glow transition-transform active:scale-95 disabled:opacity-40 disabled:shadow-none"
-          >
-            <Plus className="h-4 w-4" /> Add
-          </button>
-        </div>
-      </div>
-    </motion.article>
+      </motion.article>
+    </Tilt3D>
   );
+
 }

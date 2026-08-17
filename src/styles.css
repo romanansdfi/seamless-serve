@@ -213,3 +213,48 @@
 @utility safe-bottom {
   padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
 }
+
+@utility perspective-deep {
+  perspective: 1000px;
+  perspective-origin: 50% 50%;
+}
+
+@utility perspective-scene {
+  perspective: 1600px;
+}
+
+@utility preserve-3d {
+  transform-style: preserve-3d;
+}
+
+@utility depth-card {
+  transform-style: preserve-3d;
+  box-shadow:
+    0 1px 0 0 color-mix(in oklab, white 10%, transparent) inset,
+    0 2px 6px -2px oklch(0 0 0 / 0.4),
+    0 14px 30px -12px oklch(0 0 0 / 0.55),
+    0 30px 60px -30px color-mix(in oklab, var(--color-primary) 45%, transparent);
+  transition: box-shadow 0.35s ease;
+}
+
+@utility depth-card-hover {
+  &:hover {
+    box-shadow:
+      0 1px 0 0 color-mix(in oklab, white 16%, transparent) inset,
+      0 6px 14px -4px oklch(0 0 0 / 0.45),
+      0 26px 50px -16px oklch(0 0 0 / 0.6),
+      0 50px 80px -40px color-mix(in oklab, var(--color-primary) 60%, transparent);
+  }
+}
+
+@utility layer-pop {
+  transform: translateZ(28px);
+}
+
+@utility layer-mid {
+  transform: translateZ(16px);
+}
+
+@utility layer-base {
+  transform: translateZ(6px);
+}

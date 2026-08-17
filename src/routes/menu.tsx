@@ -8,6 +8,7 @@ import { CallWaiter } from "@/components/CallWaiter";
 import { BottomNav } from "@/components/BottomNav";
 import { FoodCard } from "@/components/FoodCard";
 import { FoodDialog } from "@/components/FoodDialog";
+import { Tilt3D } from "@/components/Tilt3D";
 import { categoriesQuery, foodsQuery, type Food } from "@/lib/menu";
 import { money, useCart, useFavorites, useGuest } from "@/lib/store";
 import { cn } from "@/lib/utils";
@@ -129,28 +130,30 @@ function MenuPage() {
           <h2 className="mb-3 flex items-center gap-2 font-display text-xl">
             <Sparkles className="h-4 w-4 text-primary" /> Popular right now
           </h2>
-          <div className="no-scrollbar -mx-5 flex gap-3 overflow-x-auto px-5 pb-1">
+          <div className="no-scrollbar perspective-scene -mx-5 flex gap-3 overflow-x-auto px-5 pb-3">
             {popular.map((f) => (
-              <button
-                key={f.id}
-                onClick={() => setSelected(f)}
-                className="w-40 shrink-0 overflow-hidden rounded-3xl border bg-card text-left shadow-soft"
-              >
-                <img
-                  src={f.image_url ?? "/images/hero.jpg"}
-                  alt={f.name}
-                  loading="lazy"
-                  width={400}
-                  height={300}
-                  className="h-24 w-full object-cover"
-                />
-                <div className="p-3">
-                  <p className="truncate text-sm font-bold">{f.name}</p>
-                  <p className="text-xs text-muted-foreground">{money(Number(f.price))}</p>
-                </div>
-              </button>
+              <Tilt3D key={f.id} className="w-40 shrink-0" intensity={12} lift={18}>
+                <button
+                  onClick={() => setSelected(f)}
+                  className="depth-card depth-card-hover w-full overflow-hidden rounded-3xl border bg-card text-left"
+                >
+                  <img
+                    src={f.image_url ?? "/images/hero.jpg"}
+                    alt={f.name}
+                    loading="lazy"
+                    width={400}
+                    height={300}
+                    className="h-24 w-full object-cover"
+                  />
+                  <div className="preserve-3d p-3">
+                    <p className="layer-mid truncate text-sm font-bold">{f.name}</p>
+                    <p className="text-xs text-muted-foreground">{money(Number(f.price))}</p>
+                  </div>
+                </button>
+              </Tilt3D>
             ))}
           </div>
+
         </section>
       )}
 
@@ -173,7 +176,7 @@ function MenuPage() {
             </p>
           </div>
         ) : (
-          <motion.div layout className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <motion.div layout className="perspective-scene grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
             <AnimatePresence mode="popLayout">
               {filtered.map((food) => (
                 <FoodCard
@@ -197,7 +200,7 @@ function MenuPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 30 }}
             onClick={() => navigate({ to: "/cart" })}
-            className="gradient-ember fixed bottom-24 left-1/2 z-40 flex w-[min(92vw,26rem)] -translate-x-1/2 items-center justify-between rounded-full px-5 py-3.5 text-primary-foreground shadow-glow"
+            className="gradient-ember depth-card fixed bottom-24 left-1/2 z-40 flex w-[min(92vw,26rem)] -translate-x-1/2 items-center justify-between rounded-full px-5 py-3.5 text-primary-foreground"
           >
             <span className="inline-flex items-center gap-2 text-sm font-bold">
               <ShoppingBag className="h-4 w-4" /> {cart.count} item{cart.count > 1 ? "s" : ""}

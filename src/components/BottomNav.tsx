@@ -19,8 +19,8 @@ export function BottomNav() {
   ];
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 px-3 pb-[env(safe-area-inset-bottom)]">
-      <div className="glass-panel mx-auto mb-3 flex max-w-md items-center justify-between gap-1 rounded-3xl p-2 shadow-soft">
+    <nav className="perspective-deep fixed inset-x-0 bottom-0 z-40 px-3 pb-[env(safe-area-inset-bottom)]">
+      <div className="glass-panel depth-card mx-auto mb-3 flex max-w-md items-center justify-between gap-1 rounded-3xl p-2 [transform:rotateX(6deg)] [transform-origin:bottom]">
         {items.map((item) => {
           const active = pathname === item.to;
           const Icon = item.icon;
