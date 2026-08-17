@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { Clock, Flame, Heart, Plus, Star } from "lucide-react";
+import { Tilt3D } from "@/components/Tilt3D";
 import type { Food } from "@/lib/menu";
 import { money } from "@/lib/store";
 import { cn } from "@/lib/utils";
