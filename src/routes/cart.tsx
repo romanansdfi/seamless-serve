@@ -62,34 +62,32 @@ function CartPage() {
     }
     setPlacing(true);
     const eta = Math.max(10, cart.items.length * 6);
-    const { data, error } = await supabase
-      .from("orders")
-      .insert({
-        ...parsed.data,
-        items: cart.items.map((i) => ({
-          name: i.name,
-          qty: i.qty,
-          price: i.price,
-          options: i.options,
-          note: i.note,
-        })),
-        subtotal: Number(cart.subtotal.toFixed(2)),
-        tax: Number((cart.tax + cart.service).toFixed(2)),
-        total: Number(cart.total.toFixed(2)),
-        eta_minutes: eta,
-      })
-      .select("id")
-      .single();
+    const newId = crypto.randomUUID();
+    const { error } = await supabase.from("orders").insert({
+      id: newId,
+      ...parsed.data,
+      items: cart.items.map((i) => ({
+        name: i.name,
+        qty: i.qty,
+        price: i.price,
+        options: i.options,
+        note: i.note,
+      })),
+      subtotal: Number(cart.subtotal.toFixed(2)),
+      tax: Number((cart.tax + cart.service).toFixed(2)),
+      total: Number(cart.total.toFixed(2)),
+      eta_minutes: eta,
+    });
     setPlacing(false);
     setConfirm(false);
-    if (error || !data) {
+    if (error) {
       toast.error("Could not place the order. Please try again.");
       return;
     }
     cart.clear();
-    setOrderId(data.id);
+    setOrderId(newId);
     toast.success("Order sent to the kitchen");
-    navigate({ to: "/order/$id", params: { id: data.id } });
+    navigate({ to: "/order/$id", params: { id: newId } });
   };
 
   return (
