@@ -231,6 +231,30 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_order: {
+        Args: { _id: string }
+        Returns: {
+          created_at: string
+          customer_name: string
+          eta_minutes: number
+          id: string
+          items: Json
+          order_number: number
+          special_instructions: string
+          status: Database["public"]["Enums"]["order_status"]
+          subtotal: number
+          table_number: string
+          tax: number
+          total: number
+          updated_at: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "orders"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
