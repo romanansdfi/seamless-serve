@@ -176,7 +176,7 @@ function MenuPage() {
             </p>
           </div>
         ) : (
-          <motion.div layout className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <motion.div layout className="perspective-scene grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
             <AnimatePresence mode="popLayout">
               {filtered.map((food) => (
                 <FoodCard
@@ -200,7 +200,7 @@ function MenuPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 30 }}
             onClick={() => navigate({ to: "/cart" })}
-            className="gradient-ember fixed bottom-24 left-1/2 z-40 flex w-[min(92vw,26rem)] -translate-x-1/2 items-center justify-between rounded-full px-5 py-3.5 text-primary-foreground shadow-glow"
+            className="gradient-ember depth-card fixed bottom-24 left-1/2 z-40 flex w-[min(92vw,26rem)] -translate-x-1/2 items-center justify-between rounded-full px-5 py-3.5 text-primary-foreground"
           >
             <span className="inline-flex items-center gap-2 text-sm font-bold">
               <ShoppingBag className="h-4 w-4" /> {cart.count} item{cart.count > 1 ? "s" : ""}
