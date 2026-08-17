@@ -8,6 +8,7 @@ import { CallWaiter } from "@/components/CallWaiter";
 import { BottomNav } from "@/components/BottomNav";
 import { FoodCard } from "@/components/FoodCard";
 import { FoodDialog } from "@/components/FoodDialog";
+import { Tilt3D } from "@/components/Tilt3D";
 import { categoriesQuery, foodsQuery, type Food } from "@/lib/menu";
 import { money, useCart, useFavorites, useGuest } from "@/lib/store";
 import { cn } from "@/lib/utils";

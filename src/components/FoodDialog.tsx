@@ -27,15 +27,19 @@ export function FoodDialog({ food, onClose }: { food: Food | null; onClose: () =
 
   return (
     <Dialog open={!!food} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-h-[92dvh] gap-0 overflow-y-auto rounded-3xl p-0 sm:max-w-lg">
-        <img
-          src={food.image_url ?? "/images/hero.jpg"}
-          alt={food.name}
-          loading="lazy"
-          width={800}
-          height={600}
-          className="h-56 w-full object-cover"
-        />
+      <DialogContent className="depth-card max-h-[92dvh] gap-0 overflow-y-auto rounded-3xl p-0 sm:max-w-lg">
+        <div className="perspective-deep relative overflow-hidden">
+          <img
+            src={food.image_url ?? "/images/hero.jpg"}
+            alt={food.name}
+            loading="lazy"
+            width={800}
+            height={600}
+            className="h-56 w-full object-cover [transform:scale(1.05)_rotateX(4deg)]"
+          />
+          <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-card via-transparent to-transparent" />
+        </div>
+
         <div className="space-y-4 p-5">
           <div className="flex min-w-0 items-start justify-between gap-3">
             <div className="min-w-0">
