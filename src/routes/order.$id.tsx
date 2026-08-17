@@ -1,12 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { motion } from "motion/react";
 import { Check, Clock, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { CallWaiter } from "@/components/CallWaiter";
 import { BottomNav } from "@/components/BottomNav";
-import { supabase } from "@/integrations/supabase/client";
 import { orderQuery, parseLines, STATUS_FLOW, STATUS_LABEL } from "@/lib/menu";
 import { money } from "@/lib/store";
 import { cn } from "@/lib/utils";
@@ -25,26 +24,17 @@ export const Route = createFileRoute("/order/$id")({
 
 function OrderPage() {
   const { id } = Route.useParams();
-  const queryClient = useQueryClient();
   const { data: order, isLoading } = useQuery(orderQuery(id));
+  const lastStatus = useRef<string | null>(null);
 
   useEffect(() => {
-    const channel = supabase
-      .channel(`order-${id}`)
-      .on(
-        "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "orders", filter: `id=eq.${id}` },
-        (payload) => {
-          const next = payload.new as { status: keyof typeof STATUS_LABEL };
-          queryClient.invalidateQueries({ queryKey: ["order", id] });
-          toast.success(STATUS_LABEL[next.status]);
-        },
-      )
-      .subscribe();
-    return () => {
-      void supabase.removeChannel(channel);
-    };
-  }, [id, queryClient]);
+    if (!order?.status) return;
+    if (lastStatus.current && lastStatus.current !== order.status) {
+      toast.success(STATUS_LABEL[order.status as keyof typeof STATUS_LABEL]);
+    }
+    lastStatus.current = order.status;
+  }, [order?.status]);
+
 
   if (isLoading) {
     return (

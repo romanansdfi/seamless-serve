@@ -66,13 +66,17 @@ export const ordersQuery = queryOptions({
 export function orderQuery(id: string) {
   return queryOptions({
     queryKey: ["order", id],
+    refetchInterval: 8000,
     queryFn: async () => {
-      const { data, error } = await supabase.from("orders").select("*").eq("id", id).maybeSingle();
+      const { data, error } = await supabase
+        .rpc("get_order", { _id: id })
+        .maybeSingle();
       if (error) throw error;
-      return data;
+      return data as Order | null;
     },
   });
 }
+
 
 export function parseLines(items: Order["items"]): OrderLine[] {
   if (!Array.isArray(items)) return [];
